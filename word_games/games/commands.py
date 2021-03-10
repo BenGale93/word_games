@@ -13,6 +13,12 @@ class Game(ABC):
 
 
 class AnagramGame(Game):
+    _compute_anagram_inputs = [
+        ("Input the string you want to find anagrams of:", str),
+        ("Input the length of the output words you would like:", int),
+        ("Input the letters from the original string you'd like to repeat:", str),
+    ]
+
     def run(self):
         while True:
             dict_path = cmd_input.get_usr_input("Input the dictionary location:")
@@ -29,17 +35,12 @@ class AnagramGame(Game):
         full_dict = anagram.Dictionary(word_list)
 
         while True:
-            input_str = cmd_input.get_usr_input(
-                "Input the string you want to find anagrams of:", str
-            )
-            target_length = cmd_input.get_usr_input(
-                "Input the length of the output words you would like:", int
-            )
-            reusable = cmd_input.get_usr_input(
-                "Input the letters from the original string you'd like to repeat:", str
-            )
+            inputs = [
+                cmd_input.get_usr_input(*arguments)
+                for arguments in self._compute_anagram_inputs
+            ]
             try:
-                result = full_dict.compute_anagrams(input_str, target_length, reusable)
+                result = full_dict.compute_anagrams(*inputs)
             except ValueError:
                 print(
                     "At least one of the letters you'd like to repeat couldn't "
