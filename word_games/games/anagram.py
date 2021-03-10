@@ -26,15 +26,14 @@ class Dictionary:
         if not isinstance(input_str, str):
             raise TypeError(f"input_str: {input_str} is not a string.")
 
-        input_str = input_str.lower()
+        input_str = self._clean_input(input_str)
 
         if target_length is None:
             target_length = len(input_str)
 
         if reusable is not None:
-            input_str = self._reusable_letters(
-                input_str, target_length, reusable.lower()
-            )
+            reusable = self._clean_input(reusable)
+            input_str = self._reusable_letters(input_str, target_length, reusable)
 
         output = set()
         wilcard_temp = Counter({"*": 1})
@@ -96,3 +95,8 @@ class Dictionary:
                 all_letters.append(letter)
 
         return "".join(sorted(all_letters))
+
+    @staticmethod
+    def _clean_input(string):
+        string = string.lower()
+        return "".join(e for e in string if e.isalpha() or e == "*")
