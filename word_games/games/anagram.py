@@ -10,7 +10,7 @@ class Dictionary:
 
         Args:
             input_str: A string, which could be a word or jumbled set of letters,
-            anagrams should be computed for.
+            anagrams should be computed for. Use * for wildcard characters.
             target_length: Specifies the target length of the output anagrams.
                 Default to None which results in anagrams that match the length of
                 input_str.
@@ -29,19 +29,25 @@ class Dictionary:
 
         input_str = input_str.lower()
 
-        input_counts = Counter(input_str)
         output = set()
+        wilcard_temp = Counter({"*": 1})
 
         for word in self.word_list:
-            word_counts = Counter(word)
+            if len(word) != target_length:
+                continue
+            input_counts = Counter(input_str)
             check = []
-            for letter, count in word_counts.items():
-                if count <= input_counts[letter]:
+            for letter in word:
+                if input_counts[letter] > 0:
                     check.append(True)
+                    input_counts = input_counts - Counter(letter)
+                elif input_counts["*"] > 0:
+                    check.append(True)
+                    input_counts = input_counts - wilcard_temp
                 else:
                     check.append(False)
 
-            if all(check) and len(word) == target_length:
+            if all(check):
                 output.add(word)
 
         return output

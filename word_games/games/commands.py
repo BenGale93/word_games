@@ -39,6 +39,7 @@ class AnagramGame(Game):
                 result = full_dict.compute_anagrams(input_str, int(target_length))
             except ValueError:
                 print("The length you entered is not an integer.")
+                continue
 
             if not result:
                 print("No anagrams of that length.")
