@@ -1,4 +1,5 @@
 import sys
+from typing import Any, Callable
 
 
 def q_to_exit(string):
@@ -6,9 +7,15 @@ def q_to_exit(string):
         sys.exit()
 
 
-def get_usr_input(prompt: str) -> str:
-    result = input(f"{prompt} (Type Q to exit) ")
-    q_to_exit(result)
+def get_usr_input(prompt: str, input_type: Callable[[str], Any] = str) -> str:
+    while True:
+        result = input(f"{prompt} (Type Q to exit) ")
+        q_to_exit(result)
+        try:
+            result = input_type(result)
+            break
+        except Exception:
+            print("Incorrect input type, please try again.")
     return result
 
 
