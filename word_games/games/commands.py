@@ -32,8 +32,18 @@ class AnagramGame(Game):
             input_str = cmd_input.get_usr_input(
                 "Input the string you want to find anagrams of:"
             )
-            result = full_dict.compute_anagrams(input_str)
-            print(result)
+            target_length = cmd_input.get_usr_input(
+                "Input the length of the output words you would like:"
+            )
+            try:
+                result = full_dict.compute_anagrams(input_str, int(target_length))
+            except ValueError:
+                print("The length you entered is not an integer.")
+
+            if not result:
+                print("No anagrams of that length.")
+            else:
+                print(result)
 
 
 class Quit(Game):

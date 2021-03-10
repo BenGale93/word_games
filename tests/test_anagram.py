@@ -16,3 +16,11 @@ def test_invalid_input():
     full_dict = anagram.Dictionary(test_word_list)
     with pytest.raises(TypeError):
         full_dict.compute_anagrams(["test"])
+
+
+def test_target_length():
+    test_word_list = ["tell", "set", "board", "Test"]
+    full_dict = anagram.Dictionary(test_word_list)
+    result = full_dict.compute_anagrams("sett", 3)
+    expected = set(["set"])
+    assert expected == result
