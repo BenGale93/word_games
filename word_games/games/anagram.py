@@ -5,7 +5,9 @@ class Dictionary:
     def __init__(self, word_list: list[str]) -> None:
         self.word_list = [word.lower() for word in word_list]
 
-    def compute_anagrams(self, input_str: str, target_length: int = None) -> set[str]:
+    def compute_anagrams(
+        self, input_str: str, target_length: int = None, reusable: str = None
+    ) -> set[str]:
         """Computes all anagrams of the input string
 
         Args:
@@ -24,10 +26,15 @@ class Dictionary:
         if not isinstance(input_str, str):
             raise TypeError(f"input_str: {input_str} is not a string.")
 
+        input_str = input_str.lower()
+
         if target_length is None:
             target_length = len(input_str)
 
-        input_str = input_str.lower()
+        if reusable is not None:
+            input_str = self._reusable_letters(
+                input_str, target_length, reusable.lower()
+            )
 
         output = set()
         wilcard_temp = Counter({"*": 1})
@@ -52,3 +59,40 @@ class Dictionary:
                 output.add(word)
 
         return output
+
+    @staticmethod
+    def _reusable_letters(input_str: str, target_length: int, reusable: str) -> str:
+        """Extends the input string with the a set of reusable letters. Each
+        letter is added to the string so that the total number of that letter
+        is equal to target_length.
+
+        Args:
+            input_str: A string, which could be a word or jumbled set of letters,
+            target_length: Number of times the reusable letters will appear in
+                the output string.
+            reusable: A string containing the letters to repeat
+
+        Raises:
+            ValueError: If the letters specified in "reusable" cannot be found in
+                "input_str".
+
+        Returns:
+            Modified string.
+        """
+        reusable = set(reusable)
+        unique_letters = set(input_str)
+        all_letters = list(input_str)
+        letter_counter = Counter(input_str)
+
+        excess_letters = reusable - unique_letters
+        if excess_letters:
+            raise ValueError(
+                "The letters specified as reusable do not all appear in the input string."
+            )
+
+        for letter in reusable:
+            count = letter_counter[letter]
+            for i in range(count, target_length):
+                all_letters.append(letter)
+
+        return "".join(sorted(all_letters))

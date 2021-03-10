@@ -35,7 +35,17 @@ class AnagramGame(Game):
             target_length = cmd_input.get_usr_input(
                 "Input the length of the output words you would like:", int
             )
-            result = full_dict.compute_anagrams(input_str, target_length)
+            reusable = cmd_input.get_usr_input(
+                "Input the letters from the original string you'd like to repeat:", str
+            )
+            try:
+                result = full_dict.compute_anagrams(input_str, target_length, reusable)
+            except ValueError:
+                print(
+                    "At least one of the letters you'd like to repeat couldn't "
+                    "be found in the original string."
+                )
+                continue
 
             if not result:
                 print("No anagrams of that length.")
