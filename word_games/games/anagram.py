@@ -100,3 +100,11 @@ class Dictionary:
     def _clean_input(string):
         string = string.lower()
         return "".join(e for e in string if e.isalpha() or e == "*")
+
+
+class AnagramResult:
+    def __init__(self, anagrams: set):
+        self.anagrams = anagrams
+
+    def sort(self, method=None):
+        return sorted(list(self.anagrams), key=method)

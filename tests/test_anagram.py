@@ -71,3 +71,13 @@ def test_reusable_letters_full():
     result = full_dict.compute_anagrams("tolsh", 5, "o")
     expected = set(["tools", "sloth"])
     assert expected == result
+
+
+def test_sort_anagram_result():
+    anagrams = anagram.AnagramResult(set(["noel", "leno"]))
+    assert ["leno", "noel"] == anagrams.sort()
+
+
+def test_sort_anagram_result_len():
+    anagrams = anagram.AnagramResult(set(["no", "leno", "joint"]))
+    assert ["no", "leno", "joint"] == anagrams.sort(len)
