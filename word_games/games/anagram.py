@@ -46,6 +46,7 @@ class Dictionary:
                     input_counts = input_counts - wilcard_temp
                 else:
                     check.append(False)
+                    break
 
             if all(check):
                 output.add(word)
